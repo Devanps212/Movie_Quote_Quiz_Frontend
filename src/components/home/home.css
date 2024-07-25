@@ -1,0 +1,115 @@
+@font-face {
+    font-family: 'Speedy';
+    src: url('/fonts/SpeedyRegular-7BLoE.ttf');
+}
+
+
+
+.custom-width {
+    max-width: 300px;
+    width: 100%;
+    margin: 0 auto;
+    
+}
+
+.custom-width .form-control:focus + label,
+.custom-width .form-control:not(:placeholder-shown) + label {
+  background-color: none;
+}
+
+.background{
+    background-image: url('/background/pxfuel.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+.custom-placeholder{
+    background-color: #000000db !important;
+    box-shadow: inset 0px 0px 26px -11px #f5f5f554 !important;
+    color: white !important;
+}
+
+.overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.content{
+    position: relative;
+    z-index: 2;
+}
+
+.logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-circle {
+    border-radius: 50%;
+    width: 49%; 
+    height: 150px;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    position: absolute;
+    top: 51.5%;
+    left: 48%;
+    transform: translate(-50%, -50%);
+} 
+
+.play-button{
+    width: 50%;
+    height: 2.5rem;
+    border: 1px solid black;
+    background-color: whitesmoke importn !important;
+    font-family: 'Speedy';
+}
+
+.play-button:hover {
+    box-shadow: -5px 4px 1px rgba(0, 0, 0, 0.674);
+    background-color: rgba(64, 118, 245, 0.916);
+    color: white;
+    transition: box-shadow 0.1s ease-in-out, background-color 0.1s ease-in-out, color 0.1s ease-in;
+}
+
+label{
+    color: #c2c2c2 !important;
+}
+
+.play-button:active{
+    animation: button-press 0.2s ease-in-out;
+}
+
+
+@keyframes button-press{
+    0%{
+        transform: scale(1);
+    }
+    50%{
+        transform: scale(0.95);
+    }
+    100%{
+        transform: scale(1);
+    }
+}
