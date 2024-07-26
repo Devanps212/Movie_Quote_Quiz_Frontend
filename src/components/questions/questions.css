@@ -76,6 +76,16 @@
     cursor: pointer;
     transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
   }
+
+    .option.correct {
+        background-color: green;
+        color: white;
+    }
+
+    .option.incorrect {
+        background-color: red;
+        color: white;
+    }
   
   .option::before {
     content: attr(data-label);
@@ -99,6 +109,34 @@
     transition: font-size 0.3s ease-in-out;
   }
 
+  .next-button {
+    width: 12%;
+    padding: 9px;
+    border-radius: 6px;
+    background-color: #000000cc;
+    color: white;
+    border: solid 1px whitesmoke;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .next-button:active {
+    animation: next-button 0.2s ease-out;
+  }
+  
+  @keyframes next-button {
+    0% {
+      transform: translateY(0);
+      box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.2);
+    }
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    }
+    100% {
+      transform: scale(1);
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+    }
+  }
 @media (max-width: 998px) {
     .back {
         background-size: cover;

@@ -1,8 +1,60 @@
 import './questions.css';
 import { BsAlarm } from 'react-icons/bs';
-import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, Modal, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { useEffect, useState } from 'react';
+import { movie } from '../../utils/movieInterface';
+import RenderOptions from '../options/options';
+import { questionFinder } from '../../features/axios/movieAxios';
+import { useNavigate } from 'react-router-dom';
 
 const Questions = () => {
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
+    const [questions, setQuestions] = useState<movie[]>([])
+    const [showModal, setShowModal] = useState(false)
+    const [selectedOption, setSelectedOption] = useState('')
+    const [score, setSecore] = useState(0)
+    const currentQuestion = questions[currentQuestionIndex]
+    const navigate = useNavigate()
+
+    useEffect(()=>{
+        if(selectedOption && currentQuestion){
+            if(selectedOption === currentQuestion.answer){
+                setSecore(prevScore=>prevScore + 1)
+            }
+        }
+    },[selectedOption, currentQuestion])
+
+
+    const questionsList = async()=>{
+        try{
+            const question = await questionFinder()
+            setQuestions(question)
+
+        } catch(error){
+            console.error(error)
+        }
+    }
+
+    const handleQuestion = ()=>{
+        setSelectedOption('')
+        setCurrentQuestionIndex((prevIndex)=>{
+            const nextIndex = (prevIndex + 1) % questions.length
+            if(nextIndex === 0 && prevIndex !== 0){
+                navigate(`/result?score=${score}`)
+                return prevIndex
+            }
+
+            return nextIndex
+        })
+    }
+
+    
+
+    useEffect(()=>{
+        questionsList()
+    }, [])
+
+
     return (
         <div className="container-fluid back">
             <div className="question-background vh-100">
@@ -20,6 +72,7 @@ const Questions = () => {
                                     >
                                         <img
                                             alt="hint"
+                                            onClick={()=>setShowModal(true)}
                                             src="/logo/suggestion.png"
                                             width={30}
                                             height={30}
@@ -27,34 +80,48 @@ const Questions = () => {
                                     </OverlayTrigger>
                                 </div>
                             </div>
-                            <div className="question-body mt-5 p-5">
-                                <div className='question-box d-flex justify-content-center align-items-center'>
-                                    <h3 className='txt'>a. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                                    </h3>
+                            {
+                                currentQuestion && (
+                                    <div className="question-body mt-5 p-5">
+                                        <div className='question-box d-flex justify-content-center align-items-center'>
+                                            <h3 className='txt'>{currentQuestionIndex + 1}.{currentQuestion.quote}
+                                            </h3>
+                                        </div>
+                                        <RenderOptions
+                                            data={currentQuestion.options} 
+                                            selectedOption={selectedOption} 
+                                            correctAnswer={currentQuestion.answer} 
+                                            setOption={setSelectedOption} 
+                                        />
+                                        <div className='d-flex justify-content-center align-items-center mt-3'>
+                                            <button onClick={()=>handleQuestion()} className='next-button'>Next</button>
+                                        </div>
+                                        
                                 </div>
-                                <div className="options mt-5">
-                                    <div className="row">
-                                        <div className="col-6">
-                                            <div className="option text-center" data-label="a.">Option 1</div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="option text-center" data-label="b.">Option 2</div>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-6">
-                                            <div className="option text-center" data-label="c.">Option 3</div>
-                                        </div>
-                                        <div className="col-6">
-                                            <div className="option text-center" data-label="d.">Option 4</div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
+                                )
+                            }
+                            
                     </div>
                 </div>
             </div>
+            <Modal show={showModal} onHide={()=>setShowModal(false)}  style={{ zIndex: '1050' }}>
+                <Modal.Header>
+                    <Modal.Title>Hint</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    {/* {
+                        currentQuestion.hint || "no Hint found"
+                    } */}
+                    
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button onClick={()=>setShowModal(false)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </div>
+        
     );
 };
 
