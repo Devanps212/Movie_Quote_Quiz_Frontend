@@ -37,7 +37,7 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
-    z-index: 3; /* Higher than both overlay-background and bg-dark */
+    z-index: 3;
 }
 
 table {
@@ -76,6 +76,25 @@ tbody tr:nth-child(even) {
 
 tbody tr:hover {
     background-color: #e3eaf0;
+}
+
+.go-home-button {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    z-index: 3;
+}
+
+.go-home-button:hover {
+    background-color: #141e28;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    color: white;
 }
 
 @media (max-width: 768px) {

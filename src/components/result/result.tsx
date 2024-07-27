@@ -1,6 +1,25 @@
+import { useEffect, useState } from 'react';
 import './result.css';
+import { allUser } from '../../features/axios/userAxios';
+import { user } from '../../utils/userInter';
+import { useNavigate } from 'react-router-dom';
 
 const Result = () => {
+
+    const navigate = useNavigate()
+    const [userData, setUserData] = useState<user[]>([])
+
+
+    useEffect(()=>{
+        localStorage.removeItem('userName')
+        const findUsers = async()=>{
+            const user = await allUser()
+            setUserData(user)
+        }
+
+        findUsers()
+    }, [])
+
     return (
         <div className="container-fluid main-body">
             <div className='overlay-background'></div>
@@ -20,13 +39,23 @@ const Result = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>John Doe</td>
-                                <td>12</td>
-                            </tr>
+                            {
+                                userData && userData.map((data, index)=>(
+                                    <tr>
+                                        <td>{index+ 1}</td>
+                                        <td>{data.name}</td>
+                                        <td>{data.score}</td>
+                                    </tr>
+                                ))
+                            }
+                            
                         </tbody>
                     </table>
+                </div>
+                <div className='col-12 d-flex justify-content-center align-items-center mt-3'>
+                    <button className='go-home-button' onClick={()=>navigate('/')}>
+                        Go Home
+                    </button>
                 </div>
             </div>
         </div>

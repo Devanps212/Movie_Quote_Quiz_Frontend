@@ -5,14 +5,18 @@ import Home from './components/home/home';
 import Questions from './components/questions/questions';
 import Result from './components/result/result';
 
+
+
 function App() {
+
+  const user = localStorage.getItem('userName')
 
   return (
     <>
       <Router>
         <Routes>
           <Route path='/' element={<Home/>}/>
-          <Route path='/questions' element={<Questions/>}/>
+          <Route path='/questions' element={user ? <Questions/> : <Home/>}/>
           <Route path='/result' element={<Result/>}/>
         </Routes>
       </Router>

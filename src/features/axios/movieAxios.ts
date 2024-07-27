@@ -1,5 +1,7 @@
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import { apiConfig } from '../../utils/apiConfig'
+import toast from 'react-hot-toast';
+
 
 interface ErrorResponse {
     message: string;
@@ -13,17 +15,17 @@ export const questionFinder = async()=>{
         }
 
         const response = await axios(questionConfig)
-        console.log(response.data)
+        console.log("data got: ", response.data.data)
         return response.data.data
 
     } catch (error) {
         const axiosError = error as AxiosError<ErrorResponse>;
-        console.error(axiosError);
+        console.error("axioserror : ",axiosError);
 
         if (axiosError.response && axiosError.response.data) {
-            throw new Error(axiosError.response.data.message);
+            toast.error(axiosError.response.data.message)
         } else {
-            throw new Error('An unknown error occurred');
+            toast.error('An unknown error occurred');
         }
     }
 }

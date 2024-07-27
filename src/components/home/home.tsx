@@ -1,8 +1,24 @@
 import { FloatingLabel, Form } from "react-bootstrap";
-
 import './home.css'
+import React, { useState } from "react";
+import { saveUser } from "../../features/axios/userAxios";
+import { useNavigate } from "react-router-dom";
+
 
 const Home = () => {
+
+  const [name, setName] = useState('')
+  const navigate = useNavigate()
+
+  const handleClick = async()=>{
+      const user = await saveUser(name)
+      if(user){
+        localStorage.setItem("userName", name)
+        navigate('/questions')
+      }
+  }
+
+
   return (
     <div className="container-fluid">
       <div className="background vh-100 d-flex justify-content-center align-items-center">
@@ -25,11 +41,17 @@ const Home = () => {
               label="Enter your name here"
               className="mb-3 custom-width"
             >
-              <Form.Control type="text" placeholder="Write your Name here" className="custom-placeholder"/>
+              <Form.Control 
+                type="text" 
+                placeholder="Write your Name here" 
+                className="custom-placeholder" 
+                value={name}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setName(e.target.value)
+                }/>
             </FloatingLabel>
           </div>
           <div className="col-12">
-            <button className="play-button">
+            <button onClick={()=>handleClick()} className="play-button">
               Play
             </button>
           </div>
